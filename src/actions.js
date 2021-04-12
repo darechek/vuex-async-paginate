@@ -73,7 +73,8 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
         const filters = getters[CONST_FILTER];
 
         const params = {
-          [CONST_CURRENT_PAGE]: getters[CONST_CURRENT_PAGE],
+          [CONST_CURRENT_PAGE]: [CONST_CURRENT_PAGE]: (getters[CONST_TOTAL_ITEMS]!=0 && !((getters[CONST_TOTAL_ITEMS]-1)%getters[CONST_PER_PAGE])) ? 
+            getters[CONST_CURRENT_PAGE]-1 : getters[CONST_CURRENT_PAGE],
           [CONST_PER_PAGE]: getters[CONST_PER_PAGE] || 10,
           [CONST_SORT_DIRECTION]: getters[CONST_SORT_DIRECTION],
           [CONST_SORT_COLUMN]: getters[CONST_SORT_COLUMN],
