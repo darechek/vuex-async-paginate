@@ -71,9 +71,9 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
       return new Promise(resolve => {
         dispatch('setLoading', true);
         const filters = getters[CONST_FILTER];
-
+        console.log(getters[CONST_CURRENT_PAGE], getters[CONST_TOTAL_ITEMS]);
         const params = {
-          [CONST_CURRENT_PAGE]: (getters[CONST_TOTAL_ITEMS]!=1 &&
+          [CONST_CURRENT_PAGE]: value == 'reset' ? 1 : (getters[CONST_TOTAL_ITEMS]!=1 &&
             getters[CONST_CURRENT_PAGE] != 1 && 
             !((getters[CONST_TOTAL_ITEMS]-1) % getters[CONST_PER_PAGE])) ? 
             getters[CONST_CURRENT_PAGE]-1 : getters[CONST_CURRENT_PAGE],
