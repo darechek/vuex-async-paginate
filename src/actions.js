@@ -71,11 +71,19 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
       return new Promise(resolve => {
         dispatch('setLoading', true);
         const filters = getters[CONST_FILTER];
+
+        const perPage = getters[CONST_PER_PAGE];
+        const totalItems = getters[CONST_TOTAL_ITEMS];
+        let currentPage = getters[CONST_CURRENT_PAGE];
+                
+        const pagesCount = ceil(totalItems / perPage);
+
+        if (currentPage > pagesCount && totalItems > 0) {
+          currentPage -= 1
+        }
+
         const params = {
-          [CONST_CURRENT_PAGE]: value == 'reset' ? 1 : (getters[CONST_TOTAL_ITEMS]!=1 &&
-            getters[CONST_CURRENT_PAGE] != 1 && 
-            !((getters[CONST_TOTAL_ITEMS]-1) % getters[CONST_PER_PAGE])) ? 
-            getters[CONST_CURRENT_PAGE]-1 : getters[CONST_CURRENT_PAGE],
+          [CONST_CURRENT_PAGE]: currentPage,
           [CONST_PER_PAGE]: getters[CONST_PER_PAGE] || 10,
           [CONST_SORT_DIRECTION]: getters[CONST_SORT_DIRECTION],
           [CONST_SORT_COLUMN]: getters[CONST_SORT_COLUMN],
