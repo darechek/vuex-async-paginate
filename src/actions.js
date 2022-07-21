@@ -76,7 +76,7 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
         const totalItems = getters[CONST_TOTAL_ITEMS];
         let currentPage = getters[CONST_CURRENT_PAGE];
                 
-        const pagesCount = ceil(totalItems / perPage);
+        const pagesCount = Math.ceil(totalItems / perPage);
 
         if (currentPage > pagesCount && totalItems > 0) {
           currentPage -= 1
