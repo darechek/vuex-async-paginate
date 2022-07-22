@@ -82,7 +82,7 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
           currentPage -= 1
         }
 
-        const params = {
+        let params = {
           [CONST_CURRENT_PAGE]: currentPage,
           [CONST_PER_PAGE]: getters[CONST_PER_PAGE] || 10,
           [CONST_SORT_DIRECTION]: getters[CONST_SORT_DIRECTION],
@@ -90,9 +90,15 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
           ...filters,
           ...value
         };
-
-        dispatch('getData', params)
+        
+        const request = (params) => {
+          dispatch('getData', params)
           .then(res => {
+            if (res.meta.total_pages < res.meta.current_page) {
+              params[CONST_CURRENT_PAGE] = res.meta.total_pages;
+              request(params);
+              return;
+            }
             const data = res[CONST_DATA] || [];
             const meta = {
               [CONST_CURRENT_PAGE]: 1,
@@ -114,6 +120,10 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
           })
           .catch(e => dispatch('setFail', e))
           .finally(() => dispatch('setLoading', false));
+        };
+
+        request(params);
+        
       });
     },
 
