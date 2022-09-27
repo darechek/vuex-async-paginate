@@ -94,8 +94,8 @@ export const mergeActions = function(keys = ALL_KEYS, actions = {}) {
         const request = (params) => {
           dispatch('getData', params)
           .then(res => {
-            if (res.meta.total_pages < res.meta.current_page) {
-              params[CONST_CURRENT_PAGE] = res.meta.total_pages;
+            if (res.meta?.total_pages < res.meta?.current_page) {
+              params[CONST_CURRENT_PAGE] = res.meta?.total_pages;
               request(params);
               return;
             }
